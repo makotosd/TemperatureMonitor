@@ -3,14 +3,22 @@
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
 <!-- head内にjQM用CSS、jQuery、jQMの順で入れる -->
-    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
-    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
-    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
 
 </head>
 <body>
 <div role="main" class="ui-content">
+  <form name="param" action="#">
+    <input type="radio" name="_th" value="temperature" checked="checked">温度
+    <input type="radio" name="_th" value="humidity">湿度
+    <input type="button" value="送信" onClick="tempgraph()">
+  </form>
+
   <div id="temperature"></div>
+  
 </div>
 
 <script src="tempgraph.js"></script>
