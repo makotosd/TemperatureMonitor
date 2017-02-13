@@ -37,5 +37,5 @@ Plotly.d3.csv('http://192.168.1.15/temperature/resultq.csv', function(rows){
       }
     };
 
-    Plotly.plot(document.getElementById('wind-speed'), tracel, layout, {showLink: false});
+    Plotly.plot(document.getElementById('temperature'), tracel, layout, {showLink: false});
 });
