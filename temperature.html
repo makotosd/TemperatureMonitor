@@ -4,9 +4,20 @@
 
 <!-- head内にjQM用CSS、jQuery、jQMの順で入れる -->
 <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
-<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
-<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+<script type="text/javascript" src="js/jquery-2.1.1.js"></script>
+<script type="text/javascript" src="js/jquery-ui-1.11.1.js"></script>
 
+<!-- loads mdp -->
+<script type="text/javascript" src="jquery-ui.multidatespicker.js"></script>
+<!-- -->
+
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/redmond/jquery-ui.css" >
+
+<script>
+  $(function() {
+  $("#datepicker").multiDatesPicker();
+  });
+</script>
 
 </head>
 <body>
@@ -15,6 +26,7 @@
     <input type="radio" name="_th" value="temperature" checked="checked">温度
     <input type="radio" name="_th" value="humidity">湿度
     <input type="button" value="送信" onClick="tempgraph()">
+    <input type="text" id="datepicker">
   </form>
 
   <div id="temperature"></div>
