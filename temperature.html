@@ -15,7 +15,10 @@
 
 <script>
   $(function() {
-  $("#datepicker").multiDatesPicker();
+  var today = new Date();
+  $("#datepicker").multiDatesPicker({
+  dateFormat: 'yy/mm/dd',
+  });
   });
 </script>
 
@@ -23,10 +26,12 @@
 <body>
 <div role="main" class="ui-content">
   <form name="param" action="#">
+    <input type="button" value="グラフ表示" onClick="tempgraph()">
+    <br>
     <input type="radio" name="_th" value="temperature" checked="checked">温度
     <input type="radio" name="_th" value="humidity">湿度
-    <input type="button" value="送信" onClick="tempgraph()">
-    <input type="text" id="datepicker">
+    <br>
+    <input type="text" name="_date" id="datepicker" >
   </form>
 
   <div id="temperature"></div>
