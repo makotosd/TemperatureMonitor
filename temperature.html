@@ -1,6 +1,7 @@
 <html>
 <head>
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<!--script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.6.0/d3.min.js"></script-->
 
 <!-- head内にjQM用CSS、jQuery、jQMの順で入れる -->
 <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
@@ -17,7 +18,7 @@
   $(function() {
   var today = new Date();
   $("#datepicker").multiDatesPicker({
-  dateFormat: 'yy/mm/dd',
+  dateFormat: 'yy-mm-dd',
   });
   });
 </script>
@@ -39,6 +40,19 @@
 </div>
 
 <script src="tempgraph.js"></script>
+<!--
+<script>
+  function tempgraph(){
+  d3.csv("http://api-m2x.att.com/v2/devices/7870230c081b7f4f678dde08bc7bcba7/streams/temperature/values.csv")
+  .header("X-M2X-KEY", "81faa53c80c0c084e797d706bc84be25")
+  .get(function(error, rows){
+  var rr = rows;
+  console.log(error);
+  console.log(rr);
+  });
+  };
+</script>
+-->
 </body>
 </html>
 
