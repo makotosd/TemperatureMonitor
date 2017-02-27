@@ -4,8 +4,9 @@ function tempgraph(){
     var sdate = viewdate[0] + "T00:00:00.000Z"
     var edate = viewdate[viewdate.length-1] + "T23:59:59.999Z"
     var value = form._th.value
+    var limit = 10000
 
-    var url = "http://api-m2x.att.com/v2/devices/7870230c081b7f4f678dde08bc7bcba7/streams/" + value + "/values.csv?start=" + sdate + "&&end=" + edate
+    var url = "http://api-m2x.att.com/v2/devices/7870230c081b7f4f678dde08bc7bcba7/streams/" + value + "/values.csv?start=" + sdate + "&&end=" + edate + "&&limit=" + limit
 
     Plotly.d3.text(url).header("X-M2X-KEY", "81faa53c80c0c084e797d706bc84be25").get(function(error, text){
 	var rows = Plotly.d3.csv.parseRows(text).reverse();
