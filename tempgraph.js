@@ -10,7 +10,7 @@ function tempgraph(){
     Plotly.d3.text(url).header("X-M2X-KEY", "81faa53c80c0c084e797d706bc84be25").get(function(error, text){
 	var rows = Plotly.d3.csv.parseRows(text).reverse();
         
-    var tracel = viewdate.map(function(vd){
+	var tracel = viewdate.map(function(vd){
 	var re_date = new RegExp(vd);
 	var filtered = rows.filter(function(row){
 	    //return (row['datetime'].match(re));
@@ -29,11 +29,7 @@ function tempgraph(){
 		return ret.replace(/:[0-9][0-9]\.[0-9][0-9][0-9]Z/, "");  // 秒削除
 	    }),
 	    y: filtered.map(function(row){          // set the x-data
-		if(form._th.value == 'temperature'){
-		    return row[1];
-		}else{
-		    return row[1];
-		}
+		return row[1];
 	    }),
 	    line: {                             // set the width of the line.
 		width: 1
