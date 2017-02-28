@@ -1,22 +1,22 @@
 ﻿//
 //
 //
-Date.prototype.label = function() {
-  //var mm = this.getMonth() + 1; // getMonth() is zero-based
-  //var dd = this.getDate();
-  var HH = this.getHours();
-  var MM = this.getMinutes();
-  var ss = this.getSeconds();
+Date.prototype.dtlocal = function() {
+    var mm = this.getMonth() + 1; // getMonth() is zero-based
+    var dd = this.getDate();
+    var HH = this.getHours();
+    var MM = this.getMinutes();
+    var ss = this.getSeconds();
 
-  return [
-          //this.getFullYear(),
-          //(mm>9 ? '' : '0') + mm,
-          //(dd>9 ? '' : '0') + dd,
-          //'T',
-          (HH>9 ? '' : '0') + HH, ':',
-          (MM>9 ? '' : '0') + MM,
-          //(ss>9 ? '' : '0') + ss,
-         ].join('');
+    return [
+        this.getFullYear(), '-',
+        (mm>9 ? '' : '0') + mm, '-',
+        (dd>9 ? '' : '0') + dd,
+        'T',
+        (HH>9 ? '' : '0') + HH, ':',
+        (MM>9 ? '' : '0') + MM, ':',
+        (ss>9 ? '' : '0') + ss,
+    ].join('');
 };
 
 //
@@ -36,48 +36,47 @@ function tempgraph(){
 	var rows = Plotly.d3.csv.parseRows(text).reverse();
         
 	var tracel = viewdate.map(function(vd){
-	var re_date = new RegExp(vd);
-	var filtered = rows.filter(function(row){
-	    //return (row['datetime'].match(re));
-	    var dt = row[0];
-	    var re_min = new RegExp(/[0-9][0-9]:[0-5][05]:[0-9][0-9]\./); // 毎5分のみ
-	    return dt.match(re_date) && dt.match(re_min);
+	    var re_date = new RegExp(vd);
+	    var filtered = rows.filter(function(row){
+		var dtiso = new Date(row[0]);
+		var dt = dtiso.dtlocal();
+		var re_min = new RegExp(/[0-9][0-9]:[0-5][05]:[0-9][0-9]$/); // 毎5分のみ
+		return dt.match(re_date) && dt.match(re_min);
+	    });
+	    var trace = {
+		type: 'scatter',                    // set the chart type
+		mode: 'markers+lines',                      // connect points with lines
+		name: vd, 
+		x: filtered.map(function(row){          // set the x-data
+                    var ret = new Date(row[0]);
+		    var HH = ret.getHours();
+		    var MM = ret.getMinutes();
+		    return [(HH>9 ? '' : '0') + HH, ':',
+			    (MM>9 ? '' : '0') + MM].join('');
+		}),
+		y: filtered.map(function(row){          // set the x-data
+		    return row[1];
+		}),
+		line: {                             // set the width of the line.
+		    width: 1
+		},
+	    };
+	    return trace;
 	});
-	var trace = {
-	    type: 'scatter',                    // set the chart type
-	    mode: 'markers+lines',                      // connect points with lines
-	    name: vd, 
-	    x: filtered.map(function(row){          // set the x-data
-		//var ret = (row['datetime']).replace(/[0-9][0-9][0-9][0-9]\/[0-9][0-9]\/[0-9][0-9] /, "");
-		//var ret = row[0];
-		//ret = ret.replace(/[0-9][0-9][0-9][0-9]\-[0-9][0-9]\-[0-9][0-9]T/, "");  // 日付削除
-		//return ret.replace(/:[0-9][0-9]\.[0-9][0-9][0-9]Z/, "");  // 秒削除
-                var ret = new Date(row[0]);
-                return ret.label();
-	    }),
-	    y: filtered.map(function(row){          // set the x-data
-		return row[1];
-	    }),
-	    line: {                             // set the width of the line.
-		width: 1
+
+	var layout = {
+	    yaxis: {
+		title: form._th.value
 	    },
+	    xaxis: {
+		showgrid: false,                  // remove the x-axis grid lines
+		tickformat: "%B, %Y"              // customize the date format to "month, day"
+	    },
+	    margin: {                           // update the left, bottom, right, top margin
+		l: 40, b: 100, r: 10, t: 20
+	    }
 	};
-	return trace;
+
+	Plotly.newPlot(document.getElementById('temperature'), tracel, layout, {showLink: false});
     });
-
-    var layout = {
-	yaxis: {
-	    title: form._th.value
-	},
-	xaxis: {
-            showgrid: false,                  // remove the x-axis grid lines
-            tickformat: "%B, %Y"              // customize the date format to "month, day"
-	},
-	margin: {                           // update the left, bottom, right, top margin
-            l: 40, b: 100, r: 10, t: 20
-	}
-    };
-
-    Plotly.newPlot(document.getElementById('temperature'), tracel, layout, {showLink: false});
-});
 };
