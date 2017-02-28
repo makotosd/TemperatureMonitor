@@ -1,12 +1,36 @@
+﻿//
+//
+//
+Date.prototype.label = function() {
+  //var mm = this.getMonth() + 1; // getMonth() is zero-based
+  //var dd = this.getDate();
+  var HH = this.getHours();
+  var MM = this.getMinutes();
+  var ss = this.getSeconds();
+
+  return [
+          //this.getFullYear(),
+          //(mm>9 ? '' : '0') + mm,
+          //(dd>9 ? '' : '0') + dd,
+          //'T',
+          (HH>9 ? '' : '0') + HH, ':',
+          (MM>9 ? '' : '0') + MM,
+          //(ss>9 ? '' : '0') + ss,
+         ].join('');
+};
+
+//
+//
+//
 function tempgraph(){
     var form = document.forms.param;
     var viewdate = (form._date.value).replace(/[" ]/g, "").split(/,/);
-    var sdate = viewdate[0] + "T00:00:00.000Z"
-    var edate = viewdate[viewdate.length-1] + "T23:59:59.999Z"
+    var sdate = new Date(viewdate[0] + "T00:00:00+09:00")
+    var edate = new Date(viewdate[viewdate.length-1] + "T23:59:59+09:00")
     var value = form._th.value
     var limit = 10000
 
-    var url = "http://api-m2x.att.com/v2/devices/7870230c081b7f4f678dde08bc7bcba7/streams/" + value + "/values.csv?start=" + sdate + "&&end=" + edate + "&&limit=" + limit
+    var url = "http://api-m2x.att.com/v2/devices/7870230c081b7f4f678dde08bc7bcba7/streams/" + value + "/values.csv?start=" + sdate.toISOString() + "&&end=" + edate.toISOString() + "&&limit=" + limit
 
     Plotly.d3.text(url).header("X-M2X-KEY", "81faa53c80c0c084e797d706bc84be25").get(function(error, text){
 	var rows = Plotly.d3.csv.parseRows(text).reverse();
@@ -25,9 +49,11 @@ function tempgraph(){
 	    name: vd, 
 	    x: filtered.map(function(row){          // set the x-data
 		//var ret = (row['datetime']).replace(/[0-9][0-9][0-9][0-9]\/[0-9][0-9]\/[0-9][0-9] /, "");
-		var ret = row[0];
-		ret = ret.replace(/[0-9][0-9][0-9][0-9]\-[0-9][0-9]\-[0-9][0-9]T/, "");  // 日付削除
-		return ret.replace(/:[0-9][0-9]\.[0-9][0-9][0-9]Z/, "");  // 秒削除
+		//var ret = row[0];
+		//ret = ret.replace(/[0-9][0-9][0-9][0-9]\-[0-9][0-9]\-[0-9][0-9]T/, "");  // 日付削除
+		//return ret.replace(/:[0-9][0-9]\.[0-9][0-9][0-9]Z/, "");  // 秒削除
+                var ret = new Date(row[0]);
+                return ret.label();
 	    }),
 	    y: filtered.map(function(row){          // set the x-data
 		return row[1];
